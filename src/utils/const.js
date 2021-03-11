@@ -1,15 +1,3 @@
 
-export const AppRoute = {
-  ROOT: `/`,
-  ITEM: `item`
-};
-
-export const APIRoute = {
-  POSTS: `/posts`,
-};
-
-export const settings = {
-  ITEMS_ON_PAGE: 50,
-};
-
-
+export const TAX = 0.13;
+export const MAX_DEDUCTION = 260000;

@@ -1,25 +1,20 @@
 export const ActionType = {
-  LOAD_DATA: `LOAD_DATA`,
-  CHANGE_SORTING: `CHANGE_SORTING`,
-  CHANGE_FILTER: `CHANGE_FILTER`,
-  CHANGE_PAGE: `CHANGE_PAGE`,
+  OPEN_POPUP: `OPEN_POPUP`,
+  CLOSE_POPUP: `CLOSE_POPUP`,
+  CALCULATE_TAX_DEDUCTION: `CALCULATE_TAX_DEDUCTION`,
 };
 
 export const ActionCreator = {
-  getData: (data) => ({
-    type: ActionType.LOAD_DATA,
+  openPopup: (data) => ({
+    type: ActionType.OPEN_POPUP,
     payload: data
   }),
-  changeSorting: (data) => ({
-    type: ActionType.CHANGE_SORTING,
+  closePopup: (data) => ({
+    type: ActionType.CLOSE_POPUP,
     payload: data
   }),
-  changePage: (data) => ({
-    type: ActionType.CHANGE_PAGE,
-    payload: data
-  }),
-  changeFilter: (data) => ({
-    type: ActionType.CHANGE_FILTER,
+  calculateTaxDeduction: (data) => ({
+    type: ActionType.CALCULATE_TAX_DEDUCTION,
     payload: data
   }),
 };

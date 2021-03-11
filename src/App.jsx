@@ -1,11 +1,13 @@
 import React from "react";
 import './App.scss';
-import Table from './components/table/table';
+import TaxDeductionButton from './components/tax-deduction-button/tax-deduction-button';
+import TaxDeductionPopup from './components/tax-deduction-popup/tax-deduction-popup';
 
 function App() {
   return (
-    <div className="App">
-      <Table/>
+    <div className="app">
+      <TaxDeductionButton/>
+      <TaxDeductionPopup/>
     </div>
   );
 }

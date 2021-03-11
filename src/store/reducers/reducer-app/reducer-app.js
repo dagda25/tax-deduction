@@ -1,78 +1,46 @@
 import {ActionType} from "../../action";
+import {MAX_DEDUCTION, TAX} from "../../../utils/const";
 
 
 const initialState = {
-  data: [],
-  currentPage: 1,
-  sortColumn: null,
-  sortOrder: `DESC`,
-  filterString: null,
-  filteredData: null,
-  numberColumns: [`userId`, `id`]
+  isPopupOpened: false,
+  taxDeduction: [],
 
 };
 
-const sortData = (state, data, column) => {
-  let newState = JSON.parse(JSON.stringify(data));
-  if (!newState) {
-    newState = [];
-  }
-  if (state.numberColumns.includes(column)) {
-    newState.sort((a, b) => {
-      return state.sortOrder === `ASC` ? a[column] - b[column] : b[column] - a[column];
-    });
-  } else {
-    newState.sort((a, b) => {
-      if (state.sortOrder === `ASC`) {
-        return a[column].localeCompare(b[column], `default`, {caseFirst: `upper`});
-      } else {
-        return -(a[column].localeCompare(b[column], `default`, {caseFirst: `upper`}));
-      }
-    });
-  }
-  return newState;
-};
+const calculateTaxDeduction = (data) => {
+  const yearDeduction = +(data * 12 * TAX).toFixed(0);
+  let totalDeduction = 0;
+  const deductionByYear = [];
 
-const filterData = (state, string) => {
-  const newState = JSON.parse(JSON.stringify(state));
-  newState.filteredData = newState.data.filter((el) => {
-    for (let col in el) {
-      if (el.hasOwnProperty(col)) {
-        if (el[col].toString().includes(string)) {
-          return true;
-        }
-      }
+  while (totalDeduction < MAX_DEDUCTION) {
 
+    totalDeduction += yearDeduction;
+    if (totalDeduction > MAX_DEDUCTION) {
+      deductionByYear.push(MAX_DEDUCTION - totalDeduction + yearDeduction);
+    } else {
+      deductionByYear.push(yearDeduction);
     }
-    return false;
-  });
-  return newState.filteredData;
+  }
+
+  return deductionByYear;
 };
 
 
 const reducerApp = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.LOAD_DATA:
+    case ActionType.OPEN_POPUP:
       return Object.assign({}, state, {
-        data: action.payload,
+        isPopupOpened: true,
       });
-    case ActionType.CHANGE_FILTER:
+    case ActionType.CLOSE_POPUP:
       return Object.assign({}, state, {
-        filterString: action.payload,
-        filteredData: filterData(state, action.payload),
-        currentPage: 1,
+        isPopupOpened: false,
+        taxDeduction: [],
       });
-    case ActionType.CHANGE_PAGE:
+    case ActionType.CALCULATE_TAX_DEDUCTION:
       return Object.assign({}, state, {
-        currentPage: action.payload,
-      });
-    case ActionType.CHANGE_SORTING:
-      return Object.assign({}, state, {
-        sortColumn: action.payload,
-        sortOrder: state.sortOrder === `DESC` ? `ASC` : `DESC`,
-        currentPage: 1,
-        data: sortData(state, state.data, action.payload),
-        filteredData: sortData(state, state.filteredData, action.payload),
+        taxDeduction: calculateTaxDeduction(action.payload),
       });
     default:
       return state;
