@@ -267,13 +267,16 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
   border-radius: 6px;
 }
 
+.popup__form__deduction-input + label:hover::before {
+  border: 1px solid #000;
+}
+
 .popup__form__deduction-input:checked + label::before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  border: 1px solid $secondary-color;
-  border-radius: 2px;
-  background-color: $secondary-color;
+  border: 1px solid #FF5E56;
+  background: url('checkbox.svg');
+  background-position: 3px 3px;
+  background-repeat: no-repeat;
+  background-color: #FF5E56;
 }
 
 .popup__form__deduction-wrapper {
@@ -316,6 +319,7 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
   line-height: 24px;
   background-color: $secondary-color;
   border-radius: 20px;
+  cursor: pointer;
 
 }
 
