@@ -1,5 +1,5 @@
 $primary-color: #F53A31;
-$secondary-color: #ccc;
+$secondary-color: #eef0f2;
 $text-color: #000;
 
 $tablet-width: 767px;
@@ -308,6 +308,11 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
   input {
     display: none;
 
+    &:checked + label {
+      background: linear-gradient(255.35deg, #DC3131 0.83%, rgba(255, 79, 79, 0) 108.93%), linear-gradient(0deg, #FF5E56, #FF5E56);
+      color: white;
+    }
+
     + label {
       display: block;
       padding: 7px 12px 5px;
@@ -315,21 +320,24 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
       font-size: 14px;
       font-weight: 400;
       line-height: 24px;
-      background-color: $secondary-color;
+      background: $secondary-color;
       border-radius: 20px;
       cursor: pointer;
-    }
 
-    &:checked + label {
-      background: linear-gradient(255.35deg, #DC3131 0.83%, rgba(255, 79, 79, 0) 108.93%), linear-gradient(0deg, #FF5E56, #FF5E56);
-      color: white;
-
-      &:hover, &:active, &:focus {
-        background-color: $primary-color;
+      &:hover {
+        color: #000;
+        background: #DFE3E6;
+      }
+      &:active, &:focus {
+        color: #fff;
+        background: $primary-color;
       }
     }
+
+
   }
 }
+
 
 .popup__form__sum {
   margin-left: 12px;
