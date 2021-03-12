@@ -9,6 +9,9 @@ const initialState = {
 };
 
 const calculateTaxDeduction = (data) => {
+  if (data < 10000) {
+    return [];
+  }
   const yearDeduction = +(data * 12 * TAX).toFixed(0);
   let totalDeduction = 0;
   const deductionByYear = [];

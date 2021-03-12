@@ -7,7 +7,8 @@ import {getEnding, getYear} from "../../utils/utils";
 
 const TaxDeductionPopup = (props) => {
   const {closePopup, isPopupOpened, calculateTaxDeduction, taxDeduction} = props;
-  const [radioValue, setRadioValue] = React.useState();
+  const [radioValue, setRadioValue] = React.useState(`fee`);
+  const [salaryInputValue, setSalaryInputValue] = React.useState(``);
 
   const onRadioChange = (e) => {
     setRadioValue(e.target.value);
@@ -18,7 +19,19 @@ const TaxDeductionPopup = (props) => {
     if (!salaryInput.current.value) {
       return false;
     }
-    return calculateTaxDeduction(salaryInput.current.value);
+    return calculateTaxDeduction(parseInt(salaryInput.current.value, 10));
+  };
+
+  const changeCursorPosition = (input, pos) => {
+    input.select();
+    setTimeout(() => {
+      input.selectionStart = input.selectionEnd = input.value.length + pos;
+    });
+  };
+
+  const handleSalaryInput = (evt) => {
+    setSalaryInputValue(`${parseInt(evt.target.value, 10) || 0} Р`);
+    changeCursorPosition(salaryInput.current, -2);
   };
 
   const salaryInput = React.useRef();
@@ -32,24 +45,26 @@ const TaxDeductionPopup = (props) => {
           </svg>
         </button>
         <h2 className="popup__title">Налоговый вычет</h2>
-        <p className="popup__description">Используйте налоговый вычет чтобы погасить ипотеку досрочно. Размер налогового вычета составляет не более 13% от своего официального годового дохода.</p>
+        <p className="popup__description">Используйте налоговый вычет чтобы погасить ипотеку досрочно.<br className="popup__description__break-desktop"/> Размер налогового вычета составляет<br className="popup__description__break-tablet"/> не более 13% от своего официального годового дохода.</p>
         <form className="popup__form">
           <p className="popup__form__annotation">Ваша зарплата в месяц</p>
-          <input className="popup__form__salary" type="number" min="15000" name="salary" ref={salaryInput} placeholder="Введите данные"></input>
+          <input className="popup__form__salary" name="salary" ref={salaryInput} placeholder="Введите данные" onChange={handleSalaryInput} onFocus={() => changeCursorPosition(salaryInput.current, -2)} value={salaryInputValue}></input>
           <button className="popup__form__salary-button" onClick={handleCalculateClick}>Рассчитать</button>
-          <fieldset className={taxDeduction.length ? `popup__form__deduction` : `popup__form__deduction popup__form__deduction--hidden`}>
+          <fieldset className={taxDeduction.length ? `popup__form__deduction popup__form__deduction--visible` : `popup__form__deduction popup__form__deduction--hidden`}>
             <p className="popup__form__annotation">Итого можете внести в качестве досрочных:</p>
-            {taxDeduction.map((yearDeduction, index) => {
-              return (
-                <div className="popup__form__deduction-wrapper" key={index}>
-                  <input className="popup__form__deduction-input" name="salary" type="checkbox" id={index + 1}></input>
-                  <label htmlFor={index + 1}>
-                    <span className="popup__form__sum">{yearDeduction} рубл{getEnding(yearDeduction)} </span>
-                    <span className="popup__form__year">{getYear(index + 1)} год</span>
-                  </label>
-                </div>
-              );
-            })}
+            <ul className="popup__form__deduction-elements">
+              {taxDeduction.map((yearDeduction, index) => {
+                return (
+                  <li className="popup__form__deduction-wrapper" key={index}>
+                    <input className="popup__form__deduction-input" name="salary" type="checkbox" defaultChecked="true" id={index + 1}></input>
+                    <label htmlFor={index + 1}>
+                      <span className="popup__form__sum">{yearDeduction} рубл{getEnding(yearDeduction)} </span>
+                      <span className="popup__form__year">{getYear(index + 1)} год</span>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
           </fieldset>
           <fieldset className="popup__form__reduction" >
             <p className="popup__form__annotation">Что уменьшаем?</p>
