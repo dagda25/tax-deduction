@@ -9,6 +9,7 @@ const TaxDeductionPopup = (props) => {
   const {closePopup, isPopupOpened, calculateTaxDeduction, taxDeduction} = props;
   const [radioValue, setRadioValue] = React.useState(`fee`);
   const [salaryInputValue, setSalaryInputValue] = React.useState(``);
+  const [salaryInputError, setSalaryInputError] = React.useState(false);
 
   const onRadioChange = (e) => {
     setRadioValue(e.target.value);
@@ -16,7 +17,8 @@ const TaxDeductionPopup = (props) => {
 
   const handleCalculateClick = (evt) => {
     evt.preventDefault();
-    if (!salaryInput.current.value) {
+    if (!parseInt((salaryInput.current.value), 10)) {
+      setSalaryInputError(true);
       return false;
     }
     return calculateTaxDeduction(parseInt(salaryInput.current.value, 10));
@@ -34,6 +36,11 @@ const TaxDeductionPopup = (props) => {
     changeCursorPosition(salaryInput.current, -2);
   };
 
+  const handleSalaryFocus = () => {
+    setSalaryInputError(false);
+    changeCursorPosition(salaryInput.current, -2);
+  };
+
   const salaryInput = React.useRef();
 
   return (
@@ -48,7 +55,8 @@ const TaxDeductionPopup = (props) => {
         <p className="popup__description">Используйте налоговый вычет чтобы погасить ипотеку досрочно.<br className="popup__description__break-desktop"/> Размер налогового вычета составляет<br className="popup__description__break-tablet"/> не более 13% от своего официального годового дохода.</p>
         <form className="popup__form">
           <p className="popup__form__annotation">Ваша зарплата в месяц</p>
-          <input className="popup__form__salary" name="salary" ref={salaryInput} placeholder="Введите данные" onChange={handleSalaryInput} onFocus={() => changeCursorPosition(salaryInput.current, -2)} value={salaryInputValue}></input>
+          <input className={salaryInputError ? `popup__form__salary popup__form__salary--error` : `popup__form__salary`} name="salary" ref={salaryInput} placeholder="Введите данные" onChange={handleSalaryInput} onFocus={handleSalaryFocus} value={salaryInputValue}></input>
+          <span className="input-message"></span>
           <button className="popup__form__salary-button" onClick={handleCalculateClick}>Рассчитать</button>
           <fieldset className={taxDeduction.length ? `popup__form__deduction popup__form__deduction--visible` : `popup__form__deduction popup__form__deduction--hidden`}>
             <p className="popup__form__annotation">Итого можете внести в качестве досрочных:</p>

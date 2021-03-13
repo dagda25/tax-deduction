@@ -235,6 +235,28 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
   }
 }
 
+.popup__form__salary--error {
+  position: relative;
+  border: 1px solid #EA0029;
+}
+
+.popup__form__salary--error + .input-message {
+  position: relative;
+}
+
+.popup__form__salary--error + .input-message::after {
+  content: "Поле обязательно для заполнения";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  text-align: left;
+  color: #EA0029;
+}
+
 .popup__form__salary-button {
   margin-top: 8px;
   border: none;
@@ -313,6 +335,11 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
       color: white;
     }
 
+    &:checked + label:hover {
+      background: $primary-color;
+      color: white;
+    }
+
     + label {
       display: block;
       padding: 7px 12px 5px;
@@ -332,6 +359,7 @@ linear-gradient(0deg, #FF5E56, #FF5E56);
         color: #fff;
         background: $primary-color;
       }
+
     }
 
 
